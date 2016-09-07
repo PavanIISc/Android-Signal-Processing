@@ -96,7 +96,7 @@ public class MainActivity extends Activity {
 	
 	/*********************************************PLAYING AUDIO FILE*****************************************/
 	/*
-	Description:
+	Description::
 	This file reads audip.pcm from internal storage and plays it back using AudioTrack instance.
 	*/
 	public void Play(){
