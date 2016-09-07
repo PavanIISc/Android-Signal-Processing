@@ -1,0 +1,137 @@
+This document explains about reading an audio file present in SDcard.
+Prerequisites:
+  -Create "raw" folder under "res" folder.
+  -copy any wav file to newly created "raw" folder.
+  -Add permission in "AndroidManifest.xml" to access the internal storage.
+  -create two buttons in activity_main.xml (copy is shown at the end of this document)
+
+/**********************************************************************************************/
+/*
+Description:
+The class MainActivity defines two button mRead and mPlay for reading and playing audio respectively. 
+It also calls two functions for the same
+*/
+
+public class MainActivity extends Activity {
+	Button mPlay, mRead;
+	byte[] audioByteData;
+	boolean isReading;
+	int sampleRate = 16000;
+	AudioTrack track=null;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		 mRead = (Button)findViewById(R.id.btnRead);
+		 mPlay = (Button)findViewById(R.id.btnPlay);
+		 
+		 mRead.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					Thread readThread = new Thread(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							isReading = true;
+							Read();
+						}
+					});
+					// TODO Auto-generated method stub
+					readThread.start();
+				}
+			});
+		 
+		 mPlay.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					Play();
+				}
+			});
+	}
+	
+	
+	/***********************************************READING WAVE FILE****************************************************/
+	/*
+	Description:
+	  It reads a file "hindi.wav" from "raw" folder. Copies the raw values and saves it in internal storage of phone as "audio.pcm"
+	  Note: the audio file values are of byte type.
+	*/
+	public void Read(){
+    	
+    	
+    	File recordFile = new File(Environment.getExternalStorageDirectory(), "audio.pcm");
+    	InputStream is = getResources().openRawResource(R.raw.hindi);
+    	int minBufferSize =  AudioRecord.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
+    	audioByteData = new byte[minBufferSize];
+    	
+    	
+    	//short[] audioShortData; // = new short[audioByteData.length];
+    	//byte[] b = new byte[audioData_byte.length];
+    	try{
+    		recordFile.createNewFile();
+    		OutputStream outputStream = new FileOutputStream(recordFile);
+    		BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+    		DataOutputStream dataOutputStream = new DataOutputStream(bufferedOutputStream);
+    		int no_of_bytes;    		
+    		
+    		
+    		while((no_of_bytes = is.read(audioByteData, 0, minBufferSize)) > -1){
+    			for(int i=0; i<no_of_bytes; i++){
+    				dataOutputStream.writeByte(audioByteData[i]);
+    			}
+    		}
+    		is.close();
+    		dataOutputStream.close();
+    		
+    	}
+    	catch(IOException e){
+    		e.printStackTrace();
+    	}
+    }
+	
+	/*********************************************PLAYING AUDIO FILE*****************************************/
+	/*
+	Description:
+	This file reads audip.pcm from internal storage and plays it back using AudioTrack instance.
+	*/
+	public void Play(){
+		File recordFile = new File(Environment.getExternalStorageDirectory(), "audio.pcm");
+		 byte[] audioData = new byte[(int)recordFile.length()];
+		 try{
+				 InputStream inputStream = new FileInputStream(recordFile);
+		         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+		         DataInputStream dataInputStream = new DataInputStream(bufferedInputStream);
+		
+		        
+		         
+		         int i = 0;
+		         while (dataInputStream.available() > 0)
+		         {
+		         	
+		             audioData[i] = dataInputStream.readByte();
+		             i++;
+		         }
+		         /*for(int i=0; i<bufferSizeInBytes; i++)
+		         	audioData[i] = dataInputStream.readByte();*/
+		
+		         dataInputStream.close();
+		 	
+		 	
+		         track = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT,
+		             audioData.length, AudioTrack.MODE_STREAM);
+		
+		         track.play();
+		         track.write(audioData, 0, audioData.length);
+			}
+		 	catch(Exception e){
+		 		e.printStackTrace();
+		 	}
+		
+	}
+	
+}
