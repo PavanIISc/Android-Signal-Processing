@@ -1,5 +1,8 @@
 /****************************************************************************************************************/
-
+The document explains about recording an audio from microphone and saving it to a stroage.
+Prerequisites:
+  -Add permission in "AndroidManifest.xml" to access the internal storage.
+  -create three buttons Record, Stop, Play in activity_main.xml (copy is shown at the end of this document)
 /****************************************************************************************************************/
 
 
@@ -32,6 +35,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+
+/**************************************************************************************************************/
+/*
+Description:
+This activity defines three buttons mRecord, mStop, mPlay for recording, to stop recording and playing it back. It also defines three functions for the same purpose.
 public class MainActivity extends Activity {
 	Button mPlay, mRecord, mStop;
 	byte[] audioByteData;
@@ -108,10 +116,7 @@ public class MainActivity extends Activity {
 			while(isRecording)
 			{
 				int numberOfShort = record.read(audioData, 0, minBufferSize);
-				//mLowPassFilter = new LowPassFS(freq, sampleRate);
 				for(int i=0; i<numberOfShort; i++){
-					
-					//dataOutputStream.writeDouble(audioData_double[i]);
 					dataOutputStream.writeByte(audioData[i]);
 				}
 			}
@@ -121,13 +126,27 @@ public class MainActivity extends Activity {
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-    }
-	
+    	}
+
+
+/******************************************STOP_RECORDING***************************/
+/*
+Description:
+Function stop_rec() sets isRecording boolean bit to false, so that the Record function will not execute anymore
+
+*/
+
 	public void stop_rec(){
-    	isRecording = false;
-    	isReading = false;
-    }
+    		isRecording = false;
+    		isReading = false;
+    	}
+
+/*****************************************PLAY_RECORDED_AUDIO******************************************/
+/*Descritpion:
+	Function Play() plays back the audio recorded, here it is saved as Recorded_audio.pcm
 	
+*/
+
 	public void Play(){
 		File recordFile = new File(Environment.getExternalStorageDirectory(), "Recorded_audio.pcm");
 		 byte[] audioData = new byte[(int)recordFile.length()];
@@ -145,9 +164,7 @@ public class MainActivity extends Activity {
 		             audioData[i] = dataInputStream.readByte();
 		             i++;
 		         }
-		         /*for(int i=0; i<bufferSizeInBytes; i++)
-		         	audioData[i] = dataInputStream.readByte();*/
-		
+		       
 		         dataInputStream.close();
 		 	
 		 	
