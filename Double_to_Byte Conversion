@@ -1,0 +1,17 @@
+The manupulated data will be of type double. In order to play the manupulated audio, it needs to be converted to Byte. This documents 
+explains a function which converts double array to byte array.
+	
+	
+	public byte[] doubleToByte(double[] dataDouble){
+		 int idx = 0;
+		 final byte generatedSnd[] = new byte[2 * dataDouble.length];
+	        for (final double dVal : dataDouble) {
+	            // scale to maximum amplitude
+	            final short val = (short) ((dVal * 32767));
+	            // in 16 bit wav PCM, first byte is the low order byte
+	            generatedSnd[idx++] = (byte) (val & 0x00ff);
+	            generatedSnd[idx++] = (byte) ((val & 0xff00) >>> 8);
+
+	        }
+	        return generatedSnd;
+	}
