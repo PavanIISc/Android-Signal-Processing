@@ -135,3 +135,37 @@ public class MainActivity extends Activity {
 	}
 	
 }
+
+/***********************************activity_main.xml*****************************/
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world" />
+
+    <Button
+        android:id="@+id/btnRead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="50dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:text="Read" />
+
+    <Button
+        android:id="@+id/btnPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnRead"
+        android:layout_below="@+id/btnRead"
+        android:layout_marginTop="109dp"
+        android:text="Play" />
+
+</RelativeLayout>
