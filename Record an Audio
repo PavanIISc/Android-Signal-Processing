@@ -181,3 +181,46 @@ Function stop_rec() sets isRecording boolean bit to false, so that the Record fu
 	}
 	
 }
+/*****************************************activity_main.xml*****************************************/
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world" />
+
+    <Button
+        android:id="@+id/btnRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnPlay"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="98dp"
+        android:layout_marginLeft="39dp"
+        android:text="Record" />
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnRecord"
+        android:layout_alignBottom="@+id/btnRecord"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="54dp"
+        android:text="Stop" />
+
+    <Button
+        android:id="@+id/btnPlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="131dp"
+        android:layout_toRightOf="@+id/btnRecord"
+        android:text="Play" />
+
+</RelativeLayout>
