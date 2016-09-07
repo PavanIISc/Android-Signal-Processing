@@ -1,0 +1,26 @@
+Usually the audio data read in a phone are of type byte, to work with it, it needs to be converted to double. This document
+explains function which converts Byte array to Double array. 
+
+
+
+public double[] byteToDouble(byte[] data){
+		// where data is the byte array.
+		ByteBuffer byteBuffer = ByteBuffer.wrap(data);
+		// make sure that the data is in Little endian order.
+		byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+		// every double will represent 2 bytes (16bit audio sample)
+		// so the double[] is half length of byte[]
+		double[] doubleData = new double[data.length / 2];
+		int i = 0;
+		while (byteBuffer.remaining() > 2) {
+		    // read shorts (16bits) and cast them to doubles
+		    short t = byteBuffer.getShort();
+		    doubleData[i] = t;
+		    doubleData[i] /= 32768.0;
+		    i++;
+		}
+		return doubleData;
+	}
+	
+	
+	
